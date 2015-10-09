@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="dingdong_blue" type="color">#1c9ced</item>
+    <item name="dingdong_blue_dark" type="color">#1883c7</item>
+    <item name="dingdong_blue_light" type="color">#46adee</item>
+    <item name="dingdong_blue1" type="color">#193282</item>
+    <item name="dingdong_orange" type="color">#f15b22</item>
+    <item name="app_white" type="color">#ffffff</item>
+    <item name="app_bg" type="color">#f9f9f9</item>
+    <item name="app_black" type="color">#000000</item>
+
+    <color name="white_highlight">#BFC4CA</color>
+
+    <color name="grey1">#eff0f1</color>
+    <color name="grey2">#dedfe0</color>
+    <color name="grey3">#cdcecf</color>
+    <color name="grey4">#bcbdbe</color>
+    <color name="grey5">#a9aaac</color>
+    <color name="grey6">#999a9b</color>
+    <color name="grey7">#88898a</color>
+    <color name="grey8">#78797a</color>
+    <color name="grey9">#68696a</color>
+    <color name="grey10">#59595a</color>
+    <color name="grey11">#49494a</color>
+    <color name="grey12">#3b3b3c</color>
+    <color name="grey13">#2c2c2d</color>
+    <color name="grey14">#1e1e1e</color>
+    <color name="grey15">#101010</color>
+
+    <color name="seperator1">#ffd0cfcf</color>
+    <color name="seperator2">#e2e2e2</color>
+
+    <color name="textColorNavyBlue">#00BAD6</color>
+    <color name="textColorBlack">#28364F</color>
+    <color name="textColorGrey">#9CA7B1</color>
+    <color name="dividerGrey">#e9eef3</color>
+    <color name="textColorGreen">#10c618</color>
+    <color name="textColorHint">#9ca7b1</color>
+    <color name="yellow">#e5fffb9b</color>
+
+
+</resources>

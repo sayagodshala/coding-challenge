@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="TAG_CHECKBOX_ID" type="id" />
+    <item name="TAG_ID" type="id" />
+    <item name="drawer_menu_item_home" type="id" />
+    <item name="drawer_menu_item_profile" type="id" />
+    <item name="drawer_menu_item_trackorder" type="id" />
+    <item name="drawer_menu_item_pastorder" type="id" />
+    <item name="drawer_menu_item_notification" type="id" />
+    <item name="drawer_menu_item_contactus" type="id" />
+
+</resources>
