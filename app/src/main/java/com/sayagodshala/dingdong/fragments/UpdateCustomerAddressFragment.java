@@ -122,6 +122,8 @@ public class UpdateCustomerAddressFragment extends BaseFragment {
                         Util.intentCreateToast(getActivity(), toast, response.body().getMessage(), Toast.LENGTH_SHORT);
                         Intent intent = new Intent();
                         intent.putExtra("address", address);
+                        intent.putExtra("update", "blabla");
+
                         getActivity().setResult(getActivity().RESULT_OK, intent);
                         getActivity().finish();
                     } else {

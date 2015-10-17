@@ -62,6 +62,8 @@ public class CustomerAddressFragment extends BaseFragment implements CustomerAdd
     private Address address;
     private boolean isInitiated = false;
 
+    private int selectedAddress = -1;
+
     @AfterViews
     void init() {
         container_no_internet.setVisibility(View.GONE);
@@ -209,14 +211,28 @@ public class CustomerAddressFragment extends BaseFragment implements CustomerAdd
     void locationRequest(int resultCode, Intent data) {
         if (resultCode == getActivity().RESULT_OK) {
             if (data.hasExtra("address")) {
+
                 Address address = data.getExtras().getParcelable("address");
-                if (listItems.size() > 1) {
-                    listItems.add(address);
-                    customerAddressListAdapter.notifyDataSetChanged();
+                if (data.hasExtra("update")) {
+                    for (int i = 0; i < listItems.size(); i++) {
+                        Address ad = listItems.get(i);
+                        if (ad.getAddressId().equalsIgnoreCase(address.getAddressId())) {
+                            listItems.set(i, address);
+                            customerAddressListAdapter.notifyDataSetChanged();
+                            break;
+                        }
+                    }
                 } else {
-                    listItems.add(address);
-                    drawItems();
+                    if (listItems.size() > 1) {
+                        listItems.add(address);
+                        customerAddressListAdapter.notifyDataSetChanged();
+                    } else {
+                        listItems.add(address);
+                        drawItems();
+                    }
                 }
+
+
             }
         }
     }

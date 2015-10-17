@@ -51,7 +51,11 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -988,6 +992,40 @@ public class Util {
                     }
                 });
         return builder.create();
+    }
+
+    public static String getDay(int index) {
+        String day = "";
+        try {
+            String[] days = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+            day = days[index - 1];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return day;
+    }
+
+    public static String parseDate(String d) {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(d);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            String hours = calendar.get(Calendar.HOUR_OF_DAY) + "";
+            String mins = calendar.get(Calendar.MINUTE) + "";
+            String monthDate = calendar.get(Calendar.DATE) + "";
+            String day = getDay(calendar.get(Calendar.DAY_OF_WEEK));
+            int month = calendar.get(Calendar.MONTH);
+            return monthDate + " " + getMonth(month) + " " + calendar.get(Calendar.YEAR) + " " + getFormattedTime(hours + ":" + mins);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+
     }
 
 }

@@ -21,7 +21,7 @@
         android:textAllCaps="true"
         android:textColor="@color/grey10"
         android:textStyle="bold"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <LinearLayout
         android:id="@+id/container_price_quantity"
@@ -46,7 +46,7 @@
             android:layout_marginLeft="2dp"
             android:text="198"
             android:textColor="#323232"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_alignParentRight="true"
             android:text="01"
             android:textColor="@color/grey10"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -108,8 +108,8 @@
         android:layout_height="0.5dp"
         android:id="@+id/spacer"
         android:layout_below="@id/container_price_quantity"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/grey2" />
 
 </RelativeLayout>

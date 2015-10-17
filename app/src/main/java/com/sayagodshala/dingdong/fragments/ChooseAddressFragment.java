@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.sayagodshala.dingdong.BaseFragment;
 import com.sayagodshala.dingdong.R;
+import com.sayagodshala.dingdong.activities.CheckoutActivity_;
 import com.sayagodshala.dingdong.activities.UpdateCustomerAddressActivity_;
 import com.sayagodshala.dingdong.adapters.ChooseAddressListAdapter;
 import com.sayagodshala.dingdong.model.Address;
@@ -108,7 +109,7 @@ public class ChooseAddressFragment extends BaseFragment implements ChooseAddress
     void onSubmitClick() {
         if (listItems.size() > 0) {
             if (address != null) {
-
+                CheckoutActivity_.intent(this).address(address).start();
             } else {
                 Util.intentCreateToast(getActivity(), toast, "Please select delivery address", Toast.LENGTH_SHORT);
             }

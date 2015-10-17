@@ -16,9 +16,9 @@ import com.sayagodshala.dingdong.model.Order;
 import com.sayagodshala.dingdong.network.APIClient;
 import com.sayagodshala.dingdong.network.APIResponse;
 import com.sayagodshala.dingdong.network.APIService;
+import com.sayagodshala.dingdong.util.Constants;
 import com.sayagodshala.dingdong.util.Util;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -56,8 +56,8 @@ public class MyOrderFragment extends BaseFragment implements MyOrderListAdapter.
 
     @ViewById(R.id.text_error)
     TextView text_error;
+    private int selectedOrderIndex;
 
-    @AfterViews
     void init() {
 
         listItems = new ArrayList<>();
@@ -125,6 +125,7 @@ public class MyOrderFragment extends BaseFragment implements MyOrderListAdapter.
                         container_error.setVisibility(View.VISIBLE);
                     }
                 } else {
+                    text_error.setText(Constants.ERROR_MESSAGE);
                     container_error.setVisibility(View.VISIBLE);
                 }
             }
@@ -132,7 +133,38 @@ public class MyOrderFragment extends BaseFragment implements MyOrderListAdapter.
             @Override
             public void onFailure(Throwable t) {
                 hideLoader();
+                text_error.setText(Constants.ERROR_MESSAGE);
                 container_error.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void cancelOrder(String orderId) {
+
+        showLoader();
+
+        Call<APIResponse> callBack = apiService.cancelOrder(customer.getuserId(), orderId);
+        callBack.enqueue(new Callback<APIResponse>() {
+            @Override
+            public void onResponse(Response<APIResponse> response) {
+                hideLoader();
+                Log.d("Retrofit Response", new Gson().toJson(response.body()));
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+                        listItems.get(selectedOrderIndex).setStatus("canceled");
+                        myOrderListAdapter.notifyDataSetChanged();
+                    } else {
+                        Util.intentCreateToast(getActivity(), toast, response.body().getMessage(), Toast.LENGTH_SHORT);
+                    }
+                } else {
+                    Util.intentCreateToast(getActivity(), toast, Constants.ERROR_MESSAGE + " while canceling order", Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideLoader();
+                Util.intentCreateToast(getActivity(), toast, Constants.ERROR_MESSAGE1 + " while canceling order", Toast.LENGTH_SHORT);
             }
         });
     }
@@ -157,5 +189,11 @@ public class MyOrderFragment extends BaseFragment implements MyOrderListAdapter.
     @Override
     public void onOrderSelected(Order order, int index) {
 
+    }
+
+    @Override
+    public void onOrderCanceled(Order order, int index) {
+        selectedOrderIndex = index;
+        cancelOrder(order.getOrderId());
     }
 }

@@ -76,5 +76,8 @@ public class CartUtils {
         return product;
     }
 
+    public static void resetCart(Context context) {
+        AppSettings.setValue(context, AppSettings.PREF_CART, "");
+    }
 
 }

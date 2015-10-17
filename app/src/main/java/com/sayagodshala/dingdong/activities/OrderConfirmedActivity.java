@@ -10,27 +10,28 @@ import com.sayagodshala.dingdong.BaseActivity;
 import com.sayagodshala.dingdong.Fragments;
 import com.sayagodshala.dingdong.MainActivity_;
 import com.sayagodshala.dingdong.R;
-import com.sayagodshala.dingdong.fragments.MyOrderFragment;
-import com.sayagodshala.dingdong.fragments.MyOrderFragment_;
+import com.sayagodshala.dingdong.fragments.OrderConfirmedFragment;
+import com.sayagodshala.dingdong.fragments.OrderConfirmedFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_container)
-public class MyOrderActivity extends BaseActivity {
+public class OrderConfirmedActivity extends BaseActivity {
 
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
 
     @ViewById(R.id.title)
     TextView title;
+
     private Context mContext;
 
     @AfterViews
     void init() {
         mContext = this;
-        title.setText("My Orders");
+        title.setText("Order Confirmed");
         toolbar.setNavigationIcon(R.drawable.button_back1);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +40,7 @@ public class MyOrderActivity extends BaseActivity {
             }
         });
 
-        final MyOrderFragment fragment = MyOrderFragment_.builder().build();
+        final OrderConfirmedFragment fragment = OrderConfirmedFragment_.builder().build();
         Fragments.loadContentFragment(this, R.id.container, fragment);
 
     }

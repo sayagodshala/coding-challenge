@@ -1,11 +1,14 @@
 package com.sayagodshala.dingdong.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +24,8 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
 
     public interface MyOrderListListener {
         public void onOrderSelected(Order order, int index);
+
+        public void onOrderCanceled(Order order, int index);
 
     }
 
@@ -102,9 +107,10 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
             holder.text_order_value = Util.genericView(cellView, R.id.text_order_value);
             holder.text_orderid = Util.genericView(cellView, R.id.text_orderid);
             holder.view_top_spacer = Util.genericView(cellView, R.id.view_top_spacer);
-            holder.container_placed = Util.genericView(cellView, R.id.container_placed);
-            holder.container_dispatched = Util.genericView(cellView, R.id.container_dispatched);
-            holder.container_delivered = Util.genericView(cellView, R.id.container_delivered);
+            holder.container_order_status = Util.genericView(cellView, R.id.container_order_status);
+            holder.container_order_cancel = Util.genericView(cellView, R.id.container_order_cancel);
+            holder.text_order_status = Util.genericView(cellView, R.id.text_order_status);
+            holder.image_order_status = Util.genericView(cellView, R.id.image_order_status);
             holder.container_products = Util.genericView(cellView, R.id.container_products);
 
             holder.view_bottom_spacer = Util.genericView(cellView, R.id.view_bottom_spacer);
@@ -116,15 +122,16 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
 
         holder = (ViewHolder) cellView.getTag();
         holder.linear_selector.setTag(position);
+        holder.container_order_cancel.setTag(position);
 
         holder.view_top_spacer.setVisibility(View.GONE);
         holder.text_schedule.setText("");
         holder.text_orderid.setText("");
         holder.text_order_value.setText("");
+        holder.text_order_status.setText("");
         holder.view_bottom_spacer.setVisibility(View.GONE);
-        holder.container_placed.setAlpha(0.2f);
-        holder.container_dispatched.setAlpha(0.2f);
-        holder.container_delivered.setAlpha(0.2f);
+        holder.image_order_status.setImageDrawable(null);
+        holder.container_order_cancel.setVisibility(View.GONE);
 
         if (holder.container_products.getChildCount() > 0)
             holder.container_products.removeAllViews();
@@ -135,23 +142,31 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
         Order item = items.get(position);
 
         if (item.getStatus().equalsIgnoreCase("placed")) {
-            holder.container_placed.setAlpha(1);
+            holder.image_order_status.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_order_placed));
+            holder.text_order_status.setText("Order Placed");
+            holder.container_order_cancel.setVisibility(View.VISIBLE);
         } else if (item.getStatus().equalsIgnoreCase("dispatched")) {
-            holder.container_placed.setAlpha(1);
-            holder.container_dispatched.setAlpha(1);
+            holder.image_order_status.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_order_dispatched));
+            holder.text_order_status.setText("Order Dispatched");
+            holder.container_order_cancel.setVisibility(View.GONE);
         } else if (item.getStatus().equalsIgnoreCase("delivered")) {
-            holder.container_delivered.setAlpha(1);
+            holder.image_order_status.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_order_delivered));
+            holder.text_order_status.setText("Order Delivered");
+            holder.container_order_cancel.setVisibility(View.GONE);
+        } else {
+            holder.image_order_status.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_order_canceled));
+            holder.text_order_status.setText("Order Canceled");
+            holder.container_order_cancel.setVisibility(View.GONE);
         }
 
         drawProducts(item.getProducts(), holder);
 
-
-
-
-        holder.text_schedule.setText("Date - " + item.getCreatedDate());
+        holder.text_schedule.setText("Date - " + Util.parseDate(item.getCreatedDate()));
         holder.text_orderid.setText("Order Id - " + item.getOrderKey());
 
         holder.view_top_spacer.setVisibility(View.VISIBLE);
+
+        holder.container_order_cancel.setOnClickListener(this);
 
         if (position == items.size() - 1)
             holder.view_bottom_spacer.setVisibility(View.VISIBLE);
@@ -162,9 +177,10 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
     }
 
     static class ViewHolder {
-        LinearLayout linear_selector, container_placed, container_dispatched, container_delivered, container_products;
-        TextView text_schedule, text_order_value, text_orderid, text_type, text_name, text_description, text_price, text_nos;
+        LinearLayout linear_selector, container_order_status, container_order_cancel, container_products;
+        TextView text_schedule, text_order_status, text_order_value, text_orderid, text_type, text_name, text_description, text_price, text_nos;
         View view_top_spacer, view_bottom_spacer;
+        ImageView image_order_status;
     }
 
     @Override
@@ -172,6 +188,9 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
         switch (v.getId()) {
             case R.id.linear_selector:
                 onOrderSelected(v);
+                break;
+            case R.id.container_order_cancel:
+                onOrderCanceled(v);
                 break;
         }
     }
@@ -181,6 +200,22 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
         listener.onOrderSelected(items.get(position), position);
 //        items.set(position, CartUtils.addItemInCart(context, items.get(position)));
 //        notifyDataSetChanged();
+    }
+
+    public void onOrderCanceled(View v) {
+        final int position = Integer.parseInt(v.getTag().toString());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Are you sure you want to cancel this order?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.onOrderCanceled(items.get(position), position);
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("No", null);
+        builder.show();
     }
 
     private void drawProducts(List<Product> products, ViewHolder holder) {

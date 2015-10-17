@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Be Safe, Play Safe!"
+            android:text="Play Safe, Be Safe!"
             android:textColor="@color/app_white"
             android:textSize="20sp"
             android:textStyle="italic" />

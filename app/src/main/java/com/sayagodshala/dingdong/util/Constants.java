@@ -9,7 +9,8 @@ import java.net.URLEncoder;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://192.168.0.106";
+    public static final String BASE_URL = "http://128.199.182.50";
+    public static final String BASE_PATH = "/staging/dingdong";
     public static final String BASE_URL_GOOGLE = "https://maps.googleapis.com";
     public static final String GCM_SENDER_ID = "309702514568";
     public static final String GOOGLE_APP_API_SERVER_KEY = "AIzaSyAiOCq4qJqcqv9TsauOa8knOtwPXmHZeiI";
@@ -23,8 +24,8 @@ public class Constants {
     public static final String WARNING_USERNAME = "Email/Mobile Required";
     public static final String WARNING_PASSWORD1 = "Password Required";
 
-    public static final String ERROR_MESSAGE = "Something went wrong!";
-    public static final String ERROR_MESSAGE1 = "Oops, Something went wrong!";
+    public static final String ERROR_MESSAGE = "Something went wrong";
+    public static final String ERROR_MESSAGE1 = "Oops, Something went wrong";
 
     // used for location search
     public static String GET_GOOGLE_PLACE(String input) {

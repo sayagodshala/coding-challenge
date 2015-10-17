@@ -27,11 +27,14 @@
     <color name="grey14">#1e1e1e</color>
     <color name="grey15">#101010</color>
 
+    <item name="app_green" type="color">#21c384</item>
+
     <color name="seperator1">#ffd0cfcf</color>
     <color name="seperator2">#e2e2e2</color>
 
     <color name="textColorNavyBlue">#00BAD6</color>
     <color name="textColorBlack">#28364F</color>
+    <color name="textColorBlack1">#405477</color>
     <color name="textColorGrey">#9CA7B1</color>
     <color name="dividerGrey">#e9eef3</color>
     <color name="textColorGreen">#10c618</color>

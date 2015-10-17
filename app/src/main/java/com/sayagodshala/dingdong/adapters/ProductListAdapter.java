@@ -178,7 +178,8 @@ public class ProductListAdapter extends BaseAdapter implements OnClickListener {
 
 
         if (url != null || !url.equalsIgnoreCase("")) {
-            mImageLoader.DisplayImage(Constants.BASE_URL + url, holder.image_dummy);
+            Log.d("ImagePath", Constants.BASE_URL + Constants.BASE_PATH + url);
+            mImageLoader.DisplayImage(Constants.BASE_URL + Constants.BASE_PATH + url, holder.image_dummy);
         }
 
         holder.view_top_spacer.setVisibility(View.VISIBLE);

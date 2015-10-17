@@ -4,6 +4,7 @@ import com.sayagodshala.dingdong.model.Address;
 import com.sayagodshala.dingdong.model.Customer;
 import com.sayagodshala.dingdong.model.Order;
 import com.sayagodshala.dingdong.model.Product;
+import com.sayagodshala.dingdong.util.Constants;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
+import retrofit.http.Query;
 
 /**
  * Created by sayagodshala on 9/15/2015.
@@ -20,8 +22,10 @@ import retrofit.http.POST;
 
 public interface APIService {
 
+    //////////////////////// Auth ///////////////////
+
     @FormUrlEncoded
-    @POST("/dingdong/service/registerUser.php")
+    @POST(Constants.BASE_PATH + "/service/registerUser.php")
     Call<APIResponse<Customer>> registerUser(@Field("name") String name,
                                              @Field("email") String email,
                                              @Field("password") String password,
@@ -32,74 +36,66 @@ public interface APIService {
                                              @Field("type") String type);
 
     @FormUrlEncoded
-    @POST("/dingdong/service/loginUser.php")
+    @POST(Constants.BASE_PATH + "/service/loginUser.php")
     Call<APIResponse<Customer>> loginUser(@Field("email") String email,
                                           @Field("password") String password,
                                           @Field("gcm_token") String gcmToken,
                                           @Field("device_id") String deviceId,
                                           @Field("device_type") String deviceType);
 
-    @GET("/dingdong/service/getUserAddresses.php")
-    Call<APIResponse<List<Address>>> getUserAddresses(@Header("user-id") String userId);
 
     @FormUrlEncoded
-    @POST("/dingdong/service/postAddress.php")
-    Call<APIResponse<Address>> postAddress(@Header("user-id") String userId, @Field("address") String address,
-                                           @Field("latlng") String latlng,
-                                           @Field("landmark") String landmark);
-
-    @FormUrlEncoded
-    @POST("/dingdong/service/updateAddress.php")
-    Call<APIResponse> updateAddress(@Header("user-id") String userId, @Field("address_id") String addressId,
-                                    @Field("address") String address,
-                                    @Field("latlng") String latlng,
-                                    @Field("landmark") String landmark);
-
-    @FormUrlEncoded
-    @POST("/service/getUserAddresses.php")
-    void getUserAddresses();
-
-    @FormUrlEncoded
-    @POST("/service/postAddress.php")
-    void postAddress(@Field("address") String address,
-                     @Field("latlng") String latlng);
-
-    @FormUrlEncoded
-    @POST("/service/postOrder.php")
-    void postOrder(@Field("address_id") String addressId,
-                   @Field("product_ids") String productIds,
-                   @Field("quantity") String quantity);
-
-    @FormUrlEncoded
-    @POST("/service/getUserOrders.php")
-    void getUserOrders();
-
-    @FormUrlEncoded
-    @POST("/service/updateOrderStatus.php")
-    void updateOrderStatus(@Field("order_id") String orderId,
-                           @Field("order_status") String orderStatus);
-
-    @FormUrlEncoded
-    @POST("/service/getOrders.php")
+    @POST(Constants.BASE_PATH + "/service/getOrders.php")
     void getOrders(@Field("order_status") String orderStatus);
 
-
-    @POST("/dingdong/service/getProducts.php")
-    Call<APIResponse<List<Product>>> getProducts();
+    @GET(Constants.BASE_PATH + "/service/getProducts.php")
+    Call<APIResponse<List<Product>>> getProducts(@Header("user-id") String userId, @Query("hour_of_day") String hourOfDay);
 
     @FormUrlEncoded
-    @POST("/service/postProduct.php")
+    @POST(Constants.BASE_PATH + "/service/postProduct.php")
     void postProduct(@Field("title") String title,
                      @Field("description") String description,
                      @Field("image") String image,
                      @Field("price") String price);
 
-    @FormUrlEncoded
-    @POST("/dingdong/service/deleteAddress.php")
-    Call<APIResponse> deleteAddress(@Header("user-id") String userId, @Field("address_id") String addressId);
+    /////////////////////////// orders ////////////////////////
 
-    @GET("/dingdong/service/getUserOrders.php")
+    @FormUrlEncoded
+    @POST(Constants.BASE_PATH + "/service/postOrder.php")
+    Call<APIResponse> postOrder(@Header("user-id") String userId,
+                                @Field("address_id") String addressId,
+                                @Field("product_ids") String productIds,
+                                @Field("quantity") String quantity);
+
+    @FormUrlEncoded
+    @POST(Constants.BASE_PATH + "/service/cancelOrder.php")
+    Call<APIResponse> cancelOrder(@Header("user-id") String userId,
+                                @Field("order_id") String orderId);
+
+    @GET(Constants.BASE_PATH + "/service/getUserOrders.php")
     Call<APIResponse<List<Order>>> getMyOrders(@Header("user-id") String userId);
 
+    ////////////////////////// address ////////
 
+    @FormUrlEncoded
+    @POST(Constants.BASE_PATH + "/service/postAddress.php")
+    Call<APIResponse<Address>> postAddress(@Header("user-id") String userId, @Field("address") String address,
+                                           @Field("latlng") String latlng,
+                                           @Field("landmark") String landmark);
+
+    @FormUrlEncoded
+    @POST(Constants.BASE_PATH + "/service/updateAddress.php")
+    Call<APIResponse> updateAddress(@Header("user-id") String userId, @Field("address_id") String addressId,
+                                    @Field("address") String address,
+                                    @Field("latlng") String latlng,
+                                    @Field("landmark") String landmark);
+
+    @GET(Constants.BASE_PATH + "/service/getUserAddresses.php")
+    Call<APIResponse<List<Address>>> getUserAddresses(@Header("user-id") String userId);
+
+    @FormUrlEncoded
+    @POST(Constants.BASE_PATH + "/service/deleteAddress.php")
+    Call<APIResponse> deleteAddress(@Header("user-id") String userId, @Field("address_id") String addressId);
+
+    /////////////////////////////////////////////
 }

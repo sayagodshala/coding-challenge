@@ -18,7 +18,8 @@
     <!-- Permission to access internet status -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
@@ -67,6 +68,7 @@
         <activity
             android:name=".MainActivity_"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.AuthActivity_"
@@ -89,12 +91,22 @@
             android:screenOrientation="portrait"></activity>
 
         <activity
+            android:name=".activities.OrderConfirmedActivity_"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
             android:name=".activities.UpdateCustomerAddressActivity_"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
 
         <activity
             android:name=".activities.MyOrderActivity_"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".activities.CheckoutActivity_"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
 

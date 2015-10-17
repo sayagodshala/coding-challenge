@@ -40,6 +40,7 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit.Call;
@@ -208,14 +209,22 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
                 isInitiated = true;
                 init();
             }
-
+            
             if (locationClient != null) {
                 locationClient.connect();
             }
             refreshView();
-
-
         }
+
+        Address myAddress = Util.getLatLngAddress(getActivity());
+
+        if (myAddress != null) {
+            if (myAddress.getLandmark() != null) {
+                currentAddress = myAddress.getLandmark();
+                current_location.setText(currentAddress);
+            }
+        }
+
 
 //        if (!isInitiated) {
 //            init();
@@ -258,7 +267,11 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
 
     public void getProducts() {
         showLoader();
-        Call<APIResponse<List<Product>>> callBack = apiService.getProducts();
+
+        Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
+        Call<APIResponse<List<Product>>> callBack = apiService.getProducts(customer.getuserId(), String.valueOf(hourOfDay));
         callBack.enqueue(new Callback<APIResponse<List<Product>>>() {
             @Override
             public void onResponse(Response<APIResponse<List<Product>>> response) {

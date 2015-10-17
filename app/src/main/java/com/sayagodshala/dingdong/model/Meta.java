@@ -5,6 +5,16 @@ public class Meta {
     private boolean open;
     private String message;
     private LocationServed locationServed;
+    private int startHour;
+    private int endHour;
+
+    public Meta(boolean open, String message, LocationServed locationServed, int startHour, int endHour) {
+        this.open = open;
+        this.message = message;
+        this.locationServed = locationServed;
+        this.startHour = startHour;
+        this.endHour = endHour;
+    }
 
     public Meta(boolean open, String message) {
         this.open = open;
@@ -42,5 +52,21 @@ public class Meta {
 
     public void setLocationServed(LocationServed locationServed) {
         this.locationServed = locationServed;
+    }
+
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public void setStartHour(int startHour) {
+        this.startHour = startHour;
+    }
+
+    public int getEndHour() {
+        return endHour;
+    }
+
+    public void setEndHour(int endHour) {
+        this.endHour = endHour;
     }
 }
