@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.sayagodshala.dingdong.BaseFragment;
 import com.sayagodshala.dingdong.MainActivity_;
 import com.sayagodshala.dingdong.R;
+import com.sayagodshala.dingdong.activities.MobileNoVerificationActivity_;
 import com.sayagodshala.dingdong.model.Customer;
 import com.sayagodshala.dingdong.network.APIClient;
 import com.sayagodshala.dingdong.network.APIResponse;
@@ -87,7 +88,7 @@ public class AuthFragment extends BaseFragment {
     @Click(R.id.signup)
     void signup() {
         if (isSignUpValid())
-            registerUser();
+            generateOtp();
     }
 
     @Click(R.id.signin)
@@ -144,40 +145,85 @@ public class AuthFragment extends BaseFragment {
         return validationMessage.length() == 0;
     }
 
-    public void registerUser() {
+//    public void registerUser() {
+//
+//        String gcmToken = Util.getGcmToken(getActivity());
+//        String deviceId = Util.uniqueDeviceID(getActivity());
+//
+//        showLoader();
+//
+//
+//        Call<APIResponse<Customer>> callBack = apiService.registerUser(name.getText().toString().trim(),
+//                email.getText().toString().trim(),
+//                choosePassword.getText().toString(), gcmToken, deviceId, "android", phoneNumber.getText().toString().trim(), "user");
+//
+//        callBack.enqueue(new Callback<APIResponse<Customer>>() {
+//            @Override
+//            public void onResponse(Response<APIResponse<Customer>> response) {
+//                Log.d("Retrofit Response", new Gson().toJson(response.body()));
+//
+//                if (response.body() != null) {
+//                    if (response.body().isStatus()) {
+//                        Util.setUserData(getActivity(), new Gson().toJson(response.body().getValues()));
+////                        Customer customer = Util.getUserData(getActivity());
+//                        Log.d("Customer", new Gson().toJson(Util.getUserData(getActivity())));
+//                        Util.setUserLogIn(getActivity());
+//                        MainActivity_.intent(getActivity()).start();
+//                        getActivity().finish();
+//                    } else {
+//                        Util.intentCreateToast(getActivity(), toast, response.body().getMessage(), Toast.LENGTH_SHORT);
+//                    }
+//                }
+//                hideLoader();
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                hideLoader();
+//                Log.d("Retrofit Response", new Gson().toJson(t));
+//            }
+//        });
+//
+//
+//    }
 
-        String gcmToken = Util.getGcmToken(getActivity());
-        String deviceId = Util.uniqueDeviceID(getActivity());
+    public void generateOtp() {
 
         showLoader();
 
-        Call<APIResponse<Customer>> callBack = apiService.registerUser(name.getText().toString().trim(),
-                email.getText().toString().trim(),
-                choosePassword.getText().toString(), gcmToken, deviceId, "android", phoneNumber.getText().toString().trim(), "user");
+        Call<APIResponse> callBack = apiService.generateOtp(phoneNumber.getText().toString().trim(),
+                email.getText().toString().trim(), name.getText().toString().trim());
 
-        callBack.enqueue(new Callback<APIResponse<Customer>>() {
+
+        callBack.enqueue(new Callback<APIResponse>() {
             @Override
-            public void onResponse(Response<APIResponse<Customer>> response) {
+            public void onResponse(Response<APIResponse> response) {
                 Log.d("Retrofit Response", new Gson().toJson(response.body()));
-
+                hideLoader();
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
-                        Util.setUserData(getActivity(), new Gson().toJson(response.body().getValues()));
-//                        Customer customer = Util.getUserData(getActivity());
-                        Log.d("Customer", new Gson().toJson(Util.getUserData(getActivity())));
-                        Util.setUserLogIn(getActivity());
-                        MainActivity_.intent(getActivity()).start();
-                        getActivity().finish();
+
+
+                        Customer customer = new Customer();
+                        customer.setEmail(email.getText().toString().trim());
+                        customer.setName(name.getText().toString().trim());
+                        customer.setmobileNo(phoneNumber.getText().toString().trim());
+                        customer.setPassword(choosePassword.getText().toString());
+                        Log.d("generate", new Gson().toJson(customer));
+                        MobileNoVerificationActivity_.intent(getActivity()).customer(customer).start();
+
                     } else {
                         Util.intentCreateToast(getActivity(), toast, response.body().getMessage(), Toast.LENGTH_SHORT);
                     }
+                } else {
+                    Util.intentCreateToast(getActivity(), toast, Constants.ERROR_MESSAGE, Toast.LENGTH_SHORT);
                 }
-                hideLoader();
             }
 
             @Override
             public void onFailure(Throwable t) {
                 hideLoader();
+                Util.intentCreateToast(getActivity(), toast, Constants.ERROR_MESSAGE1, Toast.LENGTH_SHORT);
                 Log.d("Retrofit Response", new Gson().toJson(t));
             }
         });

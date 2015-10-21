@@ -660,9 +660,9 @@ public class Util {
             AppSettings.setValue(context, AppSettings.PREF_IS_USER_LOGGED_IN, "true");
     }
 
-    public static void setServiceOpen(Context context) {
+    public static void setServiceOpen(Context context, String arg) {
         if (context != null)
-            AppSettings.setValue(context, AppSettings.PREF_IS_SERVICE_OPEN, "true");
+            AppSettings.setValue(context, AppSettings.PREF_IS_SERVICE_OPEN, arg);
     }
 
     public static String getGcmToken(Context context) {

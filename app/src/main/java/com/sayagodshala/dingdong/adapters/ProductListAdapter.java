@@ -37,7 +37,7 @@ public class ProductListAdapter extends BaseAdapter implements OnClickListener {
     private LayoutInflater layoutInflater;
     private ProductListListener listener;
     private ImageLoader mImageLoader;
-    private boolean isOpen = false;
+    public boolean isOpen = false;
 
     public ProductListAdapter(Context context, List<Product> products, ProductListListener listener) {
         this.context = context;

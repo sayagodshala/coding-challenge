@@ -200,11 +200,16 @@ public class UpdateCustomerAddressFragment extends BaseFragment {
 
         return validationMessage.length() == 0;
     }
-
+    
     @Click(R.id.rl_landmark)
     void onLandMarkClick() {
         if (address != null) {
-            PickLocationActivity_.intent(this).purpose("updateLandmark").startForResult(LOCATION_REQUEST);
+            if (address.getAddressId() != null) {
+                PickLocationActivity_.intent(this).purpose("updateLandmark").startForResult(LOCATION_REQUEST);
+            } else {
+                PickLocationActivity_.intent(this).purpose("addLandmark").startForResult(LOCATION_REQUEST);
+            }
+
         } else {
             PickLocationActivity_.intent(this).purpose("addLandmark").startForResult(LOCATION_REQUEST);
         }

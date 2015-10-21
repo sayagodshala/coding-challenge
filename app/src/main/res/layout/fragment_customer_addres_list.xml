@@ -41,7 +41,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/button_blue_rounded"
-            android:text="ADD"
+            android:text="ADD ADDRESS"
             android:textColor="@color/app_white"
             android:textSize="16sp" />
 

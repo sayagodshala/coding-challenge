@@ -51,6 +51,7 @@ import retrofit.Response;
 public class HomeFragment extends BaseFragment implements LocationClient.LocationClientListener, ProductListAdapter.ProductListListener {
 
     private static final int LOCATION_CHANGED = 1001;
+    private static final int MY_PERMISSION_FINE_LOCATION = 101;
     APIService apiService;
 
     SupportMapFragment mapFragment;
@@ -209,7 +210,11 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
                 isInitiated = true;
                 init();
             }
-            
+
+            if (CartUtils.getListOfItemsInCart(getActivity()).size() == 0)
+                container_cart.setVisibility(View.GONE);
+
+
             if (locationClient != null) {
                 locationClient.connect();
             }
@@ -266,6 +271,7 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
     }
 
     public void getProducts() {
+        Util.setServiceOpen(getActivity(), "");
         showLoader();
 
         Calendar calendar = Calendar.getInstance();
@@ -280,11 +286,11 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
 
+
                         if (response.body().getMeta() != null) {
                             boolean dowe = Util.doWeServeInDetectedArea(getActivity(), response.body().getMeta().getLocationServed());
 
                             Util.saveLocationServed(getActivity(), new Gson().toJson(response.body().getMeta().getLocationServed()));
-
                             metaMessage = !response.body().getMeta().getMessage().equalsIgnoreCase("") ? response.body().getMeta().getMessage() : "";
                             if (!dowe) {
                                 metaMessage = "Sorry, we dont serve in this area!";
@@ -292,7 +298,7 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
                             } else if (!response.body().getMeta().isOpen()) {
                                 Util.intentCreateToast(getActivity(), toast, metaMessage, Toast.LENGTH_SHORT);
                             } else {
-                                Util.setServiceOpen(getActivity());
+                                Util.setServiceOpen(getActivity(), "true");
                             }
                         }
 
@@ -397,23 +403,33 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
 
 
         List<Product> cartProducts = CartUtils.getListOfItemsInCart(getActivity());
-        if (cartProducts.size() > 0) {
-            container_cart.setVisibility(View.VISIBLE);
+
+        if (Util.isServiceOpen(getActivity())) {
+            productListAdapter.isOpen = true;
+            productListAdapter.notifyDataSetInvalidated();
+            if (cartProducts.size() > 0) {
+                container_cart.setVisibility(View.VISIBLE);
+            } else {
+                container_cart.setVisibility(View.GONE);
+            }
+            int totalQuantity = 0;
+            int topPrice = 0;
+            for (int i = 0; i < cartProducts.size(); i++) {
+                Product cartProduct = cartProducts.get(i);
+                int quantity = cartProduct.getQuantity();
+                totalQuantity += quantity;
+                int price = Integer.parseInt(cartProduct.getPrice());
+                int productPrice = quantity * price;
+                topPrice += productPrice;
+            }
+            text_total_price.setText(topPrice + "");
+            text_total_items.setText(totalQuantity + "");
         } else {
+            productListAdapter.isOpen = false;
+            productListAdapter.notifyDataSetInvalidated();
             container_cart.setVisibility(View.GONE);
         }
-        int totalQuantity = 0;
-        int topPrice = 0;
-        for (int i = 0; i < cartProducts.size(); i++) {
-            Product cartProduct = cartProducts.get(i);
-            int quantity = cartProduct.getQuantity();
-            totalQuantity += quantity;
-            int price = Integer.parseInt(cartProduct.getPrice());
-            int productPrice = quantity * price;
-            topPrice += productPrice;
-        }
-        text_total_price.setText(topPrice + "");
-        text_total_items.setText(totalQuantity + "");
+
     }
 
     private List<Product> mergeCartProductsAndServerProducts(List<Product> serverProducts) {
@@ -468,5 +484,6 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
             }
         }
     }
+
 
 }

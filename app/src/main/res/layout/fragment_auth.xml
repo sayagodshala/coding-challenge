@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/dingdong_blue"
-              android:orientation="vertical"
-              tools:ignore="MissingPrefix">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dingdong_blue"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:src="@drawable/ic_logo"/>
+        android:src="@drawable/ic_logo" />
 
 
     <LinearLayout
@@ -20,8 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:background="@color/app_white"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:id="@+id/signup_container"
@@ -37,14 +36,13 @@
                 android:layout_weight="1"
                 android:text="SIGNUP"
                 android:textColor="@color/grey_blue_text_selector"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/grey_blue_bg_selector"/>
+                android:background="@drawable/grey_blue_bg_selector" />
         </RelativeLayout>
 
 
@@ -62,14 +60,13 @@
                 android:layout_weight="1"
                 android:text="LOGIN"
                 android:textColor="@color/grey_blue_text_selector"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/grey_blue_bg_selector"/>
+                android:background="@drawable/grey_blue_bg_selector" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -98,7 +95,18 @@
                     android:layout_marginTop="20dp"
                     android:text="Let's get you started"
                     android:textColor="@color/textColorBlack"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
+
+                <TextView
+                    fontPath="@string/font_roboto_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="It's out top priority to keep you information safe and secure."
+                    android:textColor="@color/grey6"
+                    android:textSize="12sp" />
+
 
                 <EditText
                     android:id="@+id/name"
@@ -111,13 +119,13 @@
                     android:inputType="textPersonName"
                     android:singleLine="true"
                     android:textColor="@color/textColorBlack"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
-                    android:background="@color/dividerGrey"/>
+                    android:background="@color/dividerGrey" />
 
                 <EditText
                     android:id="@+id/email"
@@ -130,13 +138,13 @@
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:textColor="@color/textColorBlack"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
-                    android:background="@color/dividerGrey"/>
+                    android:background="@color/dividerGrey" />
 
                 <EditText
                     android:id="@+id/phone_number"
@@ -150,13 +158,13 @@
                     android:maxLength="10"
                     android:singleLine="true"
                     android:textColor="@color/textColorBlack"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
-                    android:background="@color/dividerGrey"/>
+                    android:background="@color/dividerGrey" />
 
                 <EditText
                     android:id="@+id/choose_password"
@@ -169,13 +177,13 @@
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textColor="@color/textColorBlack"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
-                    android:background="@color/dividerGrey"/>
+                    android:background="@color/dividerGrey" />
 
                 <Button
                     android:id="@+id/signup"
@@ -186,11 +194,11 @@
                     android:background="@drawable/button_blue_rounded"
                     android:text="Signup"
                     android:textColor="@color/app_white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"/>
+                    android:layout_height="30dp" />
             </LinearLayout>
         </ScrollView>
 
@@ -209,7 +217,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Welcome back"
                 android:textColor="@color/textColorBlack"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <EditText
                 android:id="@+id/username"
@@ -222,13 +230,13 @@
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
                 android:textColor="@color/textColorBlack"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="12dp"
-                android:background="@color/dividerGrey"/>
+                android:background="@color/dividerGrey" />
 
             <EditText
                 android:id="@+id/password"
@@ -241,13 +249,13 @@
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:textColor="@color/textColorBlack"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="12dp"
-                android:background="@color/dividerGrey"/>
+                android:background="@color/dividerGrey" />
 
             <Button
                 android:id="@+id/signin"
@@ -258,7 +266,7 @@
                 android:background="@drawable/button_blue_rounded"
                 android:text="Signin"
                 android:textColor="@color/app_white"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:id="@+id/reset_password"
@@ -273,14 +281,14 @@
                     android:layout_height="wrap_content"
                     android:text="Problems logging in? "
                     android:textColor="@color/textColorBlack"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Reset Password"
                     android:textColor="@color/textColorNavyBlue"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
     </ViewAnimator>

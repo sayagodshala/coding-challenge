@@ -1,5 +1,6 @@
 package com.sayagodshala.dingdong.activities;
 
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +53,13 @@ public class ChooseAddressActivity extends BaseActivity {
         final ChooseAddressFragment fragment = ChooseAddressFragment_.builder().build();
         Fragments.loadContentFragment(this, R.id.container, fragment);
 
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getSupportFragmentManager().findFragmentByTag(ChooseAddressFragment_.class.getSimpleName())
+                .onActivityResult(requestCode, resultCode, data);
     }
 
 }

@@ -109,6 +109,8 @@ public class ChooseAddressFragment extends BaseFragment implements ChooseAddress
     void onSubmitClick() {
         if (listItems.size() > 0) {
             if (address != null) {
+
+
                 CheckoutActivity_.intent(this).address(address).start();
             } else {
                 Util.intentCreateToast(getActivity(), toast, "Please select delivery address", Toast.LENGTH_SHORT);
@@ -223,13 +225,11 @@ public class ChooseAddressFragment extends BaseFragment implements ChooseAddress
     @Override
     public void onAddressChoosed(Address address) {
         this.address = address;
-
         if (this.address != null) {
             container_submit.setVisibility(View.VISIBLE);
         } else {
             container_submit.setVisibility(View.GONE);
         }
-
     }
 
     @Override

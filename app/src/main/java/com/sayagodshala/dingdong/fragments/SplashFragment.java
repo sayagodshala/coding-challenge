@@ -28,7 +28,9 @@ import org.androidannotations.annotations.UiThread;
 @EFragment(R.layout.fragment_splash)
 public class SplashFragment extends BaseFragment implements LocationClient.LocationClientListener {
 
+    private static final int MY_PERMISSION_FINE_LOCATION = 111;
     private LocationClient locationClient;
+
 
     @AfterViews
     void init() {
@@ -120,4 +122,8 @@ public class SplashFragment extends BaseFragment implements LocationClient.Locat
             locationClient.connect();
         }
     }
+
+
+
+
 }

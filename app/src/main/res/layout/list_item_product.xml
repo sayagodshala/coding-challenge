@@ -52,8 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_type"
-                android:text="Product Name"
                 android:layout_marginRight="10dp"
+                android:text="Product Name"
                 android:textAllCaps="true"
                 android:textColor="#323232"
                 android:textSize="14sp" />
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="3dp"
-                        android:text="ADD"
+                        android:text="BUY"
                         android:textColor="@color/app_white"
                         android:textSize="12sp" />
 

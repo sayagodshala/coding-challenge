@@ -3,6 +3,7 @@ package com.sayagodshala.dingdong;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -343,6 +344,15 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOCATION_REQUEST) {
+            getSupportFragmentManager().findFragmentByTag(CustomerAddressFragment_.class.getSimpleName())
+                    .onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 

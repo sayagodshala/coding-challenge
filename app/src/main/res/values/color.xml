@@ -28,6 +28,7 @@
     <color name="grey15">#101010</color>
 
     <item name="app_green" type="color">#21c384</item>
+    <item name="app_green_dark" type="color">#1d9662</item>
 
     <color name="seperator1">#ffd0cfcf</color>
     <color name="seperator2">#e2e2e2</color>

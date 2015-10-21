@@ -21,6 +21,8 @@ public class Customer implements Parcelable {
 
     private String type;
 
+    private String password;
+
     public Customer(String userId, String name, String email, String mobileNo, String type) {
         this.userId = userId;
         this.name = name;
@@ -72,6 +74,13 @@ public class Customer implements Parcelable {
         this.type = type;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public int describeContents() {
@@ -85,6 +94,7 @@ public class Customer implements Parcelable {
         dest.writeString(this.email);
         dest.writeString(this.mobileNo);
         dest.writeString(this.type);
+        dest.writeString(this.password);
     }
 
     protected Customer(Parcel in) {
@@ -93,6 +103,7 @@ public class Customer implements Parcelable {
         this.email = in.readString();
         this.mobileNo = in.readString();
         this.type = in.readString();
+        this.password = in.readString();
     }
 
     public static final Parcelable.Creator<Customer> CREATOR = new Parcelable.Creator<Customer>() {

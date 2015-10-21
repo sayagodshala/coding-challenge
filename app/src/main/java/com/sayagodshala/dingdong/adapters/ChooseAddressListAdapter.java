@@ -1,5 +1,6 @@
 package com.sayagodshala.dingdong.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sayagodshala.dingdong.R;
 import com.sayagodshala.dingdong.model.Address;
@@ -20,6 +22,8 @@ import com.sayagodshala.dingdong.util.Util;
 import java.util.List;
 
 public class ChooseAddressListAdapter extends BaseAdapter implements OnClickListener {
+
+    private Toast toast;
 
     public interface CustomerChooseAddressListAdapterListener {
         public void onAddressChoosed(Address address);
@@ -211,13 +215,19 @@ public class ChooseAddressListAdapter extends BaseAdapter implements OnClickList
 //            listener.onAddressChoosed(addresses.get(position));
 //        }
 
-        for (Address ads : addresses)
-            ads.setSelected(false);
 
-        Log.v("TAG", " Selected address " + address.getAddressId());
-        address.setSelected(true);
-        listener.onAddressChoosed(address);
-        notifyDataSetChanged();
+        if (Util.doWeServeInDetectedArea1(context, address)) {
+            for (Address ads : addresses)
+                ads.setSelected(false);
+
+            Log.v("TAG", " Selected address " + address.getAddressId());
+            address.setSelected(true);
+            listener.onAddressChoosed(address);
+            notifyDataSetChanged();
+        } else {
+            Util.intentCreateToast((Activity) context, toast, "Sorry, we dont serve in this area!", Toast.LENGTH_SHORT);
+        }
+
 
     }
 

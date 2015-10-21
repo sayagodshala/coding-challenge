@@ -1,9 +1,11 @@
 package com.sayagodshala.dingdong.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -78,6 +80,7 @@ public class PickLocationFragment extends BaseFragment implements LocationSearch
     private String currentLatLng;
     private LocationSearchListAdapter locationSearchListAdapter;
 
+    InputMethodManager imm;
 
     private static final int ASYNC_GET_PLACES = 1001;
     private static final int ASYNC_GET_LAT_LNG_FROM_PLACE = 1002;
@@ -108,6 +111,14 @@ public class PickLocationFragment extends BaseFragment implements LocationSearch
 
         currentLatLng = Util.getLatLng(getActivity());
         currentLocation = new ArrayList<>();
+
+        edit_search.requestFocus();
+
+        imm = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+        }
 
         if (!currentLatLng.equalsIgnoreCase("")) {
             locationObject = new GooglePrediction();
@@ -287,7 +298,20 @@ public class PickLocationFragment extends BaseFragment implements LocationSearch
     @Override
     public void onLocationSearchedClicked(GooglePrediction item) {
 
+
         if (item.getDescription().toLowerCase().equalsIgnoreCase("use my location")) {
+
+
+            Log.d("MyLocation", item.getDescription() + " : " + purpose);
+
+            if (purpose.equalsIgnoreCase("addlandmark")) {
+                Intent intent = new Intent();
+                Address address = Util.getLatLngAddress(getActivity());
+                intent.putExtra("address", address);
+                intent.putExtra("type", "addlandmark");
+                getActivity().setResult(getActivity().RESULT_OK, intent);
+                getActivity().finish();
+            }
 
         } else {
 
@@ -341,6 +365,8 @@ public class PickLocationFragment extends BaseFragment implements LocationSearch
 
     private void getLatlongFromAddress() {
 
+        Util.setServiceOpen(getActivity(), "");
+
         showLoader();
 
         new Thread(new Runnable() {
@@ -354,14 +380,16 @@ public class PickLocationFragment extends BaseFragment implements LocationSearch
 
                         if (purpose.equalsIgnoreCase("changeLocation")) {
                             boolean dowe = Util.doWeServeInDetectedArea1(getActivity(), result);
+
+                            Util.saveLatLng(getActivity(), result.getLatlng());
+                            Util.saveLatLngAddress(getActivity(), new Gson().toJson(result));
                             if (dowe) {
-                                Util.saveLatLng(getActivity(), result.getLatlng());
-                                Util.saveLatLngAddress(getActivity(), new Gson().toJson(result));
-                                Util.setServiceOpen(getActivity());
-                                getActivity().finish();
+                                Util.setServiceOpen(getActivity(), "true");
                             } else {
+                                Util.setServiceOpen(getActivity(), "");
                                 Util.intentCreateToast(getActivity(), toast, "it seems we dont serve this area!", Toast.LENGTH_SHORT);
                             }
+                            getActivity().finish();
                         }
                         if (purpose.equalsIgnoreCase("updatelandmark")) {
                             Intent intent = new Intent();

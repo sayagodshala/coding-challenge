@@ -1,24 +1,29 @@
 package com.sayagodshala.dingdong.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.sayagodshala.dingdong.BaseActivity;
 import com.sayagodshala.dingdong.Fragments;
-import com.sayagodshala.dingdong.MainActivity_;
 import com.sayagodshala.dingdong.R;
-import com.sayagodshala.dingdong.fragments.OrderConfirmedFragment;
-import com.sayagodshala.dingdong.fragments.OrderConfirmedFragment_;
+import com.sayagodshala.dingdong.fragments.MobileNoVerificationFragment;
+import com.sayagodshala.dingdong.fragments.MobileNoVerificationFragment_;
+import com.sayagodshala.dingdong.model.Customer;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_container)
-public class OrderConfirmedActivity extends BaseActivity {
+public class MobileNoVerificationActivity extends BaseActivity {
+
+    @Extra
+    Customer customer;
 
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
@@ -30,24 +35,25 @@ public class OrderConfirmedActivity extends BaseActivity {
 
     @AfterViews
     void init() {
+
         mContext = this;
-        title.setText("Order Confirmed");
+
+        title.setText("");
+
         toolbar.setNavigationIcon(R.drawable.button_back1);
+
+        Log.d("Verify1", new Gson().toJson(customer));
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity_.intent(mContext).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
+                finish();
             }
         });
 
-        final OrderConfirmedFragment fragment = OrderConfirmedFragment_.builder().build();
+        final MobileNoVerificationFragment fragment = MobileNoVerificationFragment_.builder().customer(customer).build();
         Fragments.loadContentFragment(this, R.id.container, fragment);
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        MainActivity_.intent(mContext).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
-    }
 }

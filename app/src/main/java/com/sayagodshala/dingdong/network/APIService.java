@@ -33,7 +33,14 @@ public interface APIService {
                                              @Field("device_id") String deviceId,
                                              @Field("device_type") String deviceType,
                                              @Field("mobile_no") String mobileNo,
-                                             @Field("type") String type);
+                                             @Field("type") String type,
+                                             @Field("otp") String otp);
+
+    @FormUrlEncoded
+    @POST(Constants.BASE_PATH + "/service/generateOtp.php")
+    Call<APIResponse> generateOtp(@Field("mobile_no") String mobileNo,
+                                  @Field("email") String email,
+                                  @Field("name") String name);
 
     @FormUrlEncoded
     @POST(Constants.BASE_PATH + "/service/loginUser.php")
@@ -70,7 +77,7 @@ public interface APIService {
     @FormUrlEncoded
     @POST(Constants.BASE_PATH + "/service/cancelOrder.php")
     Call<APIResponse> cancelOrder(@Header("user-id") String userId,
-                                @Field("order_id") String orderId);
+                                  @Field("order_id") String orderId);
 
     @GET(Constants.BASE_PATH + "/service/getUserOrders.php")
     Call<APIResponse<List<Order>>> getMyOrders(@Header("user-id") String userId);
