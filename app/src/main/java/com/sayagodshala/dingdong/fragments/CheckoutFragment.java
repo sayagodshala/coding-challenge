@@ -3,10 +3,12 @@ package com.sayagodshala.dingdong.fragments;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.sayagodshala.dingdong.BaseFragment;
 import com.sayagodshala.dingdong.R;
 import com.sayagodshala.dingdong.activities.OrderConfirmedActivity_;
@@ -43,6 +45,15 @@ public class CheckoutFragment extends BaseFragment {
     @ViewById(R.id.container_no_internet)
     LinearLayout container_no_internet;
 
+    @ViewById(R.id.layout_price)
+    RelativeLayout layout_price;
+
+    @ViewById(R.id.layout_price_after_discount)
+    RelativeLayout layout_price_after_discount;
+
+    @ViewById(R.id.dash)
+    View dash;
+
     @ViewById(R.id.button_pay)
     Button button_pay;
 
@@ -50,6 +61,12 @@ public class CheckoutFragment extends BaseFragment {
 
     @ViewById(R.id.text_total_price)
     TextView text_total_price;
+
+    @ViewById(R.id.text_discount)
+    TextView text_discount;
+
+    @ViewById(R.id.text_total_price_discount)
+    TextView text_total_price_discount;
 
     @ViewById(R.id.text_delivery_address)
     TextView text_delivery_address;
@@ -60,6 +77,10 @@ public class CheckoutFragment extends BaseFragment {
 
     private String productIds;
     private String quantitys;
+    private int topPrice;
+    private int afterDiscount = 0;
+    private int discountOffered = 0;
+    private int discountAmount = 30;
 
     void init() {
 
@@ -109,8 +130,9 @@ public class CheckoutFragment extends BaseFragment {
         productIds = "";
         quantitys = "";
 
+
         int totalQuantity = 0;
-        int topPrice = 0;
+        topPrice = 0;
         for (int i = 0; i < cartProducts.size(); i++) {
             Product cartProduct = cartProducts.get(i);
 
@@ -133,7 +155,25 @@ public class CheckoutFragment extends BaseFragment {
             int productPrice = quantity * price;
             topPrice += productPrice;
         }
-        text_total_price.setText(topPrice + "");
+
+        if (customer.getFirstOrderDiscount().equalsIgnoreCase("0")) {
+            if (topPrice > discountAmount) {
+                discountOffered = discountAmount;
+                afterDiscount = topPrice - discountOffered;
+            } else {
+                discountOffered = topPrice;
+                afterDiscount = topPrice - discountOffered;
+            }
+            text_total_price.setText(topPrice + "");
+            text_total_price_discount.setText(afterDiscount + "");
+            text_discount.setText("On your first order we offer you \ndiscount of " + discountOffered + " Rs.");
+        } else {
+            text_discount.setVisibility(View.GONE);
+            dash.setVisibility(View.GONE);
+            layout_price_after_discount.setVisibility(View.GONE);
+            text_total_price.setText(topPrice + "");
+        }
+
     }
 
     @Click(R.id.button_pay)
@@ -146,14 +186,19 @@ public class CheckoutFragment extends BaseFragment {
         Call<APIResponse> callBack = apiService.postOrder(customer.getuserId(),
                 address.getAddressId(),
                 productIds,
-                quantitys);
+                quantitys, String.valueOf(discountOffered));
         callBack.enqueue(new Callback<APIResponse>() {
             @Override
             public void onResponse(Response<APIResponse> response) {
                 hideLoader();
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
-//                        Util.intentCreateToast(getActivity(), toast, response.body().getMessage(), Toast.LENGTH_SHORT);
+
+                        if (customer.getFirstOrderDiscount().equalsIgnoreCase("0")) {
+                            customer.setFirstOrderDiscount(String.valueOf(discountOffered));
+                            Util.setUserData(getActivity(), new Gson().toJson(customer));
+                        }
+//                      Util.intentCreateToast(getActivity(), toast, response.body().getMessage(), Toast.LENGTH_SHORT);
                         CartUtils.resetCart(getActivity());
                         OrderConfirmedActivity_.intent(getActivity()).start();
                     } else {
@@ -172,6 +217,5 @@ public class CheckoutFragment extends BaseFragment {
         });
 
     }
-
 
 }

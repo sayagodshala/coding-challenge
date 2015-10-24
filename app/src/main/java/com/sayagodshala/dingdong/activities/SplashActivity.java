@@ -1,6 +1,8 @@
 package com.sayagodshala.dingdong.activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,7 +22,7 @@ import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_container)
 public class SplashActivity extends BaseActivity {
-    
+
     private static final int MY_PERMISSION_FINE_LOCATION = 101;
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
@@ -45,6 +47,8 @@ public class SplashActivity extends BaseActivity {
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
 
+                appAlert();
+
             } else {
 
                 // No explanation needed, we can request the permission.
@@ -61,6 +65,22 @@ public class SplashActivity extends BaseActivity {
             final SplashFragment splashFragment = SplashFragment_.builder().build();
             Fragments.loadContentFragment(this, R.id.container, splashFragment);
         }
+    }
+
+    private void appAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("This wont work without location, give device's location access!");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityCompat.requestPermissions(SplashActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSION_FINE_LOCATION);
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
 
@@ -86,6 +106,8 @@ public class SplashActivity extends BaseActivity {
                     final SplashFragment splashFragment = SplashFragment_.builder().build();
                     Fragments.loadContentFragment(this, R.id.container, splashFragment);
                 } else {
+
+                    appAlert();
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.

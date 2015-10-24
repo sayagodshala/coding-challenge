@@ -648,10 +648,24 @@ public class Util {
         return open;
     }
 
+    public static boolean isServingArea(Context context) {
+
+        boolean open = false;
+        if (context != null) {
+            String raw = AppSettings.getValue(context, AppSettings.PREF_ARE_WE_SERVING, "");
+            if (raw.equalsIgnoreCase("true"))
+                open = true;
+        }
+        return open;
+    }
+
+
     public static void clearSpecialPreferences(Context context) {
         AppSettings.setValue(context, AppSettings.PREF_IS_SERVICE_OPEN, "");
         AppSettings.setValue(context, AppSettings.PREF_LAT_LNG, "");
         AppSettings.setValue(context, AppSettings.PREF_LAT_LNG_ADDRESS, "");
+        AppSettings.setValue(context, AppSettings.PREF_ARE_WE_CLOSED, "");
+        AppSettings.setValue(context, AppSettings.PREF_ARE_WE_SERVING, "");
     }
 
 
@@ -663,6 +677,16 @@ public class Util {
     public static void setServiceOpen(Context context, String arg) {
         if (context != null)
             AppSettings.setValue(context, AppSettings.PREF_IS_SERVICE_OPEN, arg);
+    }
+
+    public static void setAreWeServing(Context context, String arg) {
+        if (context != null)
+            AppSettings.setValue(context, AppSettings.PREF_ARE_WE_SERVING, arg);
+    }
+
+    public static void setAreWeClosed(Context context, String arg) {
+        if (context != null)
+            AppSettings.setValue(context, AppSettings.PREF_ARE_WE_CLOSED, arg);
     }
 
     public static String getGcmToken(Context context) {

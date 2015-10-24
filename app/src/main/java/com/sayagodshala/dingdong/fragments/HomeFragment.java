@@ -1,6 +1,8 @@
 package com.sayagodshala.dingdong.fragments;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -31,7 +33,9 @@ import com.sayagodshala.dingdong.model.Product;
 import com.sayagodshala.dingdong.network.APIClient;
 import com.sayagodshala.dingdong.network.APIResponse;
 import com.sayagodshala.dingdong.network.APIService;
+import com.sayagodshala.dingdong.settings.AppSettings;
 import com.sayagodshala.dingdong.util.CartUtils;
+import com.sayagodshala.dingdong.util.Constants;
 import com.sayagodshala.dingdong.util.Util;
 
 import org.androidannotations.annotations.Click;
@@ -70,6 +74,9 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
 
     @ViewById(R.id.current_location)
     TextView current_location;
+
+    @ViewById(R.id.text_closed)
+    TextView text_closed;
 
     @ViewById(R.id.list_items)
     ListView list_items;
@@ -118,6 +125,7 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
         text_total_price.setText("");
         container_no_location.setVisibility(View.GONE);
         container_cart.setVisibility(View.GONE);
+        text_closed.setVisibility(View.GONE);
         container_location.setVisibility(View.GONE);
         container_no_internet.setVisibility(View.GONE);
         container_error.setVisibility(View.GONE);
@@ -128,6 +136,9 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
         } else {
             setCurrentAddressAsTitle();
         }
+
+        updateGcmToken();
+
     }
 
     @Override
@@ -192,6 +203,7 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
             container_cart.setVisibility(View.GONE);
             container_error.setVisibility(View.GONE);
             container_location.setVisibility(View.GONE);
+            text_closed.setVisibility(View.GONE);
             container_no_internet.setVisibility(View.GONE);
             list_items.setVisibility(View.GONE);
         } else if (!Util.checkConnection(getActivity())) {
@@ -203,6 +215,7 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
             container_cart.setVisibility(View.GONE);
             container_error.setVisibility(View.GONE);
             container_location.setVisibility(View.GONE);
+            text_closed.setVisibility(View.GONE);
             container_no_internet.setVisibility(View.VISIBLE);
             list_items.setVisibility(View.GONE);
         } else {
@@ -286,20 +299,25 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
 
-
                         if (response.body().getMeta() != null) {
-                            boolean dowe = Util.doWeServeInDetectedArea(getActivity(), response.body().getMeta().getLocationServed());
-
-                            Util.saveLocationServed(getActivity(), new Gson().toJson(response.body().getMeta().getLocationServed()));
                             metaMessage = !response.body().getMeta().getMessage().equalsIgnoreCase("") ? response.body().getMeta().getMessage() : "";
-                            if (!dowe) {
-                                metaMessage = "Sorry, we dont serve in this area!";
-                                Util.intentCreateToast(getActivity(), toast, metaMessage, Toast.LENGTH_SHORT);
-                            } else if (!response.body().getMeta().isOpen()) {
-                                Util.intentCreateToast(getActivity(), toast, metaMessage, Toast.LENGTH_SHORT);
+                            if (!response.body().getMeta().isOpen()) {
+                                Util.setServiceOpen(getActivity(), "false");
+                                appAlert(metaMessage);
                             } else {
-                                Util.setServiceOpen(getActivity(), "true");
+                                boolean dowe = Util.doWeServeInDetectedArea(getActivity(), response.body().getMeta().getLocationServed());
+                                Util.saveLocationServed(getActivity(), new Gson().toJson(response.body().getMeta().getLocationServed()));
+                                if (!dowe) {
+                                    Util.setAreWeServing(getActivity(), "");
+                                    metaMessage = "Sorry, we dont serve in this area!";
+                                    appAlert(metaMessage);
+//                                    Util.intentCreateToast(getActivity(), toast, metaMessage, Toast.LENGTH_SHORT);
+                                } else {
+                                    Util.setAreWeServing(getActivity(), "true");
+                                    Util.setServiceOpen(getActivity(), "true");
+                                }
                             }
+
                         }
 
                         if (response.body().getValues().size() > 0) {
@@ -321,6 +339,33 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
             public void onFailure(Throwable t) {
                 hideLoader();
                 container_error.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void updateGcmToken() {
+
+        String gcmToken = AppSettings.getValue(getActivity(), AppSettings.PREF_GCM_REGISTRATION_ID, "");
+
+        if (gcmToken.equalsIgnoreCase(""))
+            gcmToken = "Not Available";
+
+        Call<APIResponse> callBack = apiService.gcmTokenUpdate(customer.getuserId(), gcmToken);
+        callBack.enqueue(new Callback<APIResponse>() {
+            @Override
+            public void onResponse(Response<APIResponse> response) {
+                hideLoader();
+                Log.d("Retrofit Response", new Gson().toJson(response.body()));
+                if (response.body() != null) {
+                    Log.d("GCMTokenUpdated", response.body().getMessage());
+                } else {
+                    Log.d("GCMTokenUpdated", Constants.ERROR_MESSAGE);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d("GCMTokenUpdated", Constants.ERROR_MESSAGE);
             }
         });
     }
@@ -400,13 +445,22 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
     }
 
     private void updateCartView() {
-
-
         List<Product> cartProducts = CartUtils.getListOfItemsInCart(getActivity());
 
-        if (Util.isServiceOpen(getActivity())) {
-            productListAdapter.isOpen = true;
-            productListAdapter.notifyDataSetInvalidated();
+        Log.d("Props", Util.isServiceOpen(getActivity()) + " : " + Util.isServingArea(getActivity()));
+
+        if (Util.isServiceOpen(getActivity()) && Util.isServingArea(getActivity())) {
+
+            if(!productListAdapter.isOpen)
+            {
+                productListAdapter.isOpen = true;
+                productListAdapter.notifyDataSetInvalidated();
+            }
+
+
+
+
+
             if (cartProducts.size() > 0) {
                 container_cart.setVisibility(View.VISIBLE);
             } else {
@@ -429,7 +483,6 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
             productListAdapter.notifyDataSetInvalidated();
             container_cart.setVisibility(View.GONE);
         }
-
     }
 
     private List<Product> mergeCartProductsAndServerProducts(List<Product> serverProducts) {
@@ -449,7 +502,6 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
         }
         return serverProducts;
     }
-
 
     private void refreshView() {
 
@@ -483,6 +535,18 @@ public class HomeFragment extends BaseFragment implements LocationClient.Locatio
                 current_location.setText(currentAddress);
             }
         }
+    }
+
+    private void appAlert(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(message);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
 

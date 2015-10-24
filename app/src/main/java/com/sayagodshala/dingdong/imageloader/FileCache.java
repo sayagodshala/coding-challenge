@@ -1,6 +1,7 @@
 package com.sayagodshala.dingdong.imageloader;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.io.File;
 
@@ -11,10 +12,10 @@ public class FileCache {
 	public FileCache(Context context) {
 		// Find the dir to save cached images
 		if (android.os.Environment.getExternalStorageState().equals(
-				android.os.Environment.MEDIA_MOUNTED))
+				Environment.DIRECTORY_DOWNLOADS))
 			cacheDir = new File(
 					android.os.Environment.getExternalStorageDirectory(),
-					"LazyList");
+					"DingDong");
 		else
 			cacheDir = context.getCacheDir();
 		if (!cacheDir.exists())

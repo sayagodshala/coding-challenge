@@ -16,6 +16,8 @@ public class AppSettings {
     public static final String PREF_SEARCHED_SELECTED_LOCATION = "PREF_SEARCHED_SELECTED_LOCATION";
 
     public static final String PREF_IS_SERVICE_OPEN = "PREF_IS_SERVICE_OPEN";
+    public static final String PREF_ARE_WE_CLOSED = "PREF_ARE_WE_CLOSED";
+    public static final String PREF_ARE_WE_SERVING = "PREF_ARE_WE_SERVING";
 
     public static final String PREF_LAT_LNG = "PREF_LAT_LNG";
     public static final String PREF_LAT_LNG_ADDRESS = "PREF_LAT_LNG_ADDRESS";

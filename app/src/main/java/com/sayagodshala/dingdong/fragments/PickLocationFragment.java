@@ -365,7 +365,6 @@ public class PickLocationFragment extends BaseFragment implements LocationSearch
 
     private void getLatlongFromAddress() {
 
-        Util.setServiceOpen(getActivity(), "");
 
         showLoader();
 
@@ -384,9 +383,9 @@ public class PickLocationFragment extends BaseFragment implements LocationSearch
                             Util.saveLatLng(getActivity(), result.getLatlng());
                             Util.saveLatLngAddress(getActivity(), new Gson().toJson(result));
                             if (dowe) {
-                                Util.setServiceOpen(getActivity(), "true");
+                                Util.setAreWeServing(getActivity(), "true");
                             } else {
-                                Util.setServiceOpen(getActivity(), "");
+                                Util.setAreWeServing(getActivity(), "");
                                 Util.intentCreateToast(getActivity(), toast, "it seems we dont serve this area!", Toast.LENGTH_SHORT);
                             }
                             getActivity().finish();

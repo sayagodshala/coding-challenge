@@ -5,6 +5,7 @@
     <item name="dingdong_blue_light" type="color">#46adee</item>
     <item name="dingdong_blue1" type="color">#193282</item>
     <item name="dingdong_orange" type="color">#f15b22</item>
+    <item name="dingdong_red" type="color">#cbff000d</item>
     <item name="app_white" type="color">#ffffff</item>
     <item name="app_bg" type="color">#f9f9f9</item>
     <item name="app_black" type="color">#000000</item>

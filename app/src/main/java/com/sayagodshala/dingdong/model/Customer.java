@@ -23,12 +23,25 @@ public class Customer implements Parcelable {
 
     private String password;
 
+    @SerializedName("first_order_discount")
+    private String firstOrderDiscount;
+
     public Customer(String userId, String name, String email, String mobileNo, String type) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.mobileNo = mobileNo;
         this.type = type;
+    }
+
+    public Customer(String userId, String name, String email, String mobileNo, String type, String password, String firstOrderDiscount) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.mobileNo = mobileNo;
+        this.type = type;
+        this.password = password;
+        this.firstOrderDiscount = firstOrderDiscount;
     }
 
     public Customer() {
@@ -82,6 +95,14 @@ public class Customer implements Parcelable {
         this.password = password;
     }
 
+    public String getFirstOrderDiscount() {
+        return firstOrderDiscount;
+    }
+
+    public void setFirstOrderDiscount(String firstOrderDiscount) {
+        this.firstOrderDiscount = firstOrderDiscount;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -95,6 +116,7 @@ public class Customer implements Parcelable {
         dest.writeString(this.mobileNo);
         dest.writeString(this.type);
         dest.writeString(this.password);
+        dest.writeString(this.firstOrderDiscount);
     }
 
     protected Customer(Parcel in) {
@@ -104,6 +126,7 @@ public class Customer implements Parcelable {
         this.mobileNo = in.readString();
         this.type = in.readString();
         this.password = in.readString();
+        this.firstOrderDiscount = in.readString();
     }
 
     public static final Parcelable.Creator<Customer> CREATOR = new Parcelable.Creator<Customer>() {

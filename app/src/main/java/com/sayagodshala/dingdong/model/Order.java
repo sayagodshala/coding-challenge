@@ -16,6 +16,7 @@ public class Order {
     private String orderKey;
     private Address address;
     private List<Product> products;
+    private String discount;
 
     public Order(String orderId, String status, String paid, String createdDate, String orderKey, Address address, List<Product> products) {
         this.orderId = orderId;
@@ -25,6 +26,17 @@ public class Order {
         this.orderKey = orderKey;
         this.address = address;
         this.products = products;
+    }
+
+    public Order(String orderId, String status, String paid, String createdDate, String orderKey, Address address, List<Product> products, String discount) {
+        this.orderId = orderId;
+        this.status = status;
+        this.paid = paid;
+        this.createdDate = createdDate;
+        this.orderKey = orderKey;
+        this.address = address;
+        this.products = products;
+        this.discount = discount;
     }
 
     public Order() {
@@ -84,5 +96,13 @@ public class Order {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
     }
 }

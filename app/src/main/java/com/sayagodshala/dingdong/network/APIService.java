@@ -50,6 +50,11 @@ public interface APIService {
                                           @Field("device_id") String deviceId,
                                           @Field("device_type") String deviceType);
 
+    @FormUrlEncoded
+    @POST(Constants.BASE_PATH + "/service/gcmTokenUpdate.php")
+    Call<APIResponse> gcmTokenUpdate(@Header("user-id") String userId,
+                                     @Field("gcm_token") String gcmToken);
+
 
     @FormUrlEncoded
     @POST(Constants.BASE_PATH + "/service/getOrders.php")
@@ -72,7 +77,8 @@ public interface APIService {
     Call<APIResponse> postOrder(@Header("user-id") String userId,
                                 @Field("address_id") String addressId,
                                 @Field("product_ids") String productIds,
-                                @Field("quantity") String quantity);
+                                @Field("quantity") String quantity,
+                                @Field("discount") String discount);
 
     @FormUrlEncoded
     @POST(Constants.BASE_PATH + "/service/cancelOrder.php")

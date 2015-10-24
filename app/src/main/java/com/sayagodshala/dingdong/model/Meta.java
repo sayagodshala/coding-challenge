@@ -1,5 +1,7 @@
 package com.sayagodshala.dingdong.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Meta {
 
     private boolean open;
@@ -7,6 +9,8 @@ public class Meta {
     private LocationServed locationServed;
     private int startHour;
     private int endHour;
+    @SerializedName("service_open")
+    private String serviceOpen;
 
     public Meta(boolean open, String message, LocationServed locationServed, int startHour, int endHour) {
         this.open = open;
@@ -68,5 +72,13 @@ public class Meta {
 
     public void setEndHour(int endHour) {
         this.endHour = endHour;
+    }
+
+    public String getServiceOpen() {
+        return serviceOpen;
+    }
+
+    public void setServiceOpen(String serviceOpen) {
+        this.serviceOpen = serviceOpen;
     }
 }

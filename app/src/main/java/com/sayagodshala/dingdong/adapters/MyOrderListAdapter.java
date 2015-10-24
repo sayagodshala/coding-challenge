@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sayagodshala.dingdong.R;
@@ -104,11 +105,15 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
 
             holder.linear_selector = Util.genericView(cellView, R.id.linear_selector);
             holder.text_schedule = Util.genericView(cellView, R.id.text_schedule);
-            holder.text_order_value = Util.genericView(cellView, R.id.text_order_value);
+            holder.text_payable = Util.genericView(cellView, R.id.text_payable);
+            holder.text_payable_cart = Util.genericView(cellView, R.id.text_payable_cart);
+            holder.text_payable_discount = Util.genericView(cellView, R.id.text_payable_discount);
             holder.text_orderid = Util.genericView(cellView, R.id.text_orderid);
             holder.view_top_spacer = Util.genericView(cellView, R.id.view_top_spacer);
             holder.container_order_status = Util.genericView(cellView, R.id.container_order_status);
             holder.container_order_cancel = Util.genericView(cellView, R.id.container_order_cancel);
+            holder.container_discount_payable = Util.genericView(cellView, R.id.container_discount_payable);
+            holder.container_cart_payable = Util.genericView(cellView, R.id.container_cart_payable);
             holder.text_order_status = Util.genericView(cellView, R.id.text_order_status);
             holder.image_order_status = Util.genericView(cellView, R.id.image_order_status);
             holder.container_products = Util.genericView(cellView, R.id.container_products);
@@ -127,9 +132,13 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
         holder.view_top_spacer.setVisibility(View.GONE);
         holder.text_schedule.setText("");
         holder.text_orderid.setText("");
-        holder.text_order_value.setText("");
+        holder.text_payable.setText("");
+        holder.text_payable_discount.setText("");
+        holder.text_payable_cart.setText("");
         holder.text_order_status.setText("");
         holder.view_bottom_spacer.setVisibility(View.GONE);
+        holder.container_discount_payable.setVisibility(View.GONE);
+        holder.container_cart_payable.setVisibility(View.GONE);
         holder.image_order_status.setImageDrawable(null);
         holder.container_order_cancel.setVisibility(View.GONE);
 
@@ -140,6 +149,11 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
         //holder.linear_selector.setOnClickListener(this);
 
         Order item = items.get(position);
+
+        if (!item.getDiscount().equalsIgnoreCase("0")) {
+            holder.container_discount_payable.setVisibility(View.VISIBLE);
+            holder.container_cart_payable.setVisibility(View.VISIBLE);
+        }
 
         if (item.getStatus().equalsIgnoreCase("placed")) {
             holder.image_order_status.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_order_placed));
@@ -159,7 +173,7 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
             holder.container_order_cancel.setVisibility(View.GONE);
         }
 
-        drawProducts(item.getProducts(), holder);
+        drawProducts(item, holder);
 
         holder.text_schedule.setText("Date - " + Util.parseDate(item.getCreatedDate()));
         holder.text_orderid.setText("Order Id - " + item.getOrderKey());
@@ -177,8 +191,9 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
     }
 
     static class ViewHolder {
+        RelativeLayout container_discount_payable, container_cart_payable;
         LinearLayout linear_selector, container_order_status, container_order_cancel, container_products;
-        TextView text_schedule, text_order_status, text_order_value, text_orderid, text_type, text_name, text_description, text_price, text_nos;
+        TextView text_schedule, text_order_status, text_payable_cart, text_payable_discount, text_payable, text_orderid, text_type, text_name, text_description, text_price, text_nos;
         View view_top_spacer, view_bottom_spacer;
         ImageView image_order_status;
     }
@@ -218,8 +233,10 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
         builder.show();
     }
 
-    private void drawProducts(List<Product> products, ViewHolder holder) {
+    private void drawProducts(Order order, ViewHolder holder) {
 
+
+        List<Product> products = order.getProducts();
 
         int sumTotal = 0;
 
@@ -254,7 +271,14 @@ public class MyOrderListAdapter extends BaseAdapter implements OnClickListener {
         }
 
 
-        holder.text_order_value.setText(sumTotal + "");
+        if (!order.getDiscount().equalsIgnoreCase("0")) {
+            int payableAmount = sumTotal - Integer.parseInt(order.getDiscount());
+            holder.text_payable_discount.setText(order.getDiscount());
+            holder.text_payable_cart.setText(sumTotal + "");
+            holder.text_payable.setText(payableAmount + "");
+        } else {
+            holder.text_payable.setText(sumTotal + "");
+        }
 
 
     }
