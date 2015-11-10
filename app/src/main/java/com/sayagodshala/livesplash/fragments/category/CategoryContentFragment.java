@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sayagodshala.livesplash.BaseFragment;
 import com.sayagodshala.livesplash.R;
+import com.sayagodshala.livesplash.activities.AddLocationActivity_;
 import com.sayagodshala.livesplash.adapters.AppListAdapter;
 import com.sayagodshala.livesplash.model.Feed;
 import com.sayagodshala.livesplash.util.Util;
@@ -77,6 +78,7 @@ public class CategoryContentFragment extends BaseFragment implements OnMapReadyC
     LayoutInflater layoutInflater;
 
     private AppListAdapter appListAdapter;
+    private Feed feed;
 
     public static CategoryContentFragment newInstance(CharSequence title, int categoryId) {
         Bundle bundle = new Bundle();
@@ -220,7 +222,7 @@ public class CategoryContentFragment extends BaseFragment implements OnMapReadyC
     private void initContainer3() {
         list_apps.setVisibility(View.VISIBLE);
 
-        Feed feed = Util.getData(getActivity());
+        feed = Util.getData(getActivity());
 
         if (feed != null) {
             appListAdapter = new AppListAdapter(getActivity(), feed.getEntry());
@@ -256,14 +258,13 @@ public class CategoryContentFragment extends BaseFragment implements OnMapReadyC
             }
         }
 
-
     }
 
 
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        
+        AddLocationActivity_.intent(getActivity()).start();
 
         return false;
     }

@@ -49,9 +49,6 @@ public class CategoryNavigatorActivity extends BaseActivity {
 
         apiService = APIClient.getAPIService();
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        CategorySlidingTabsFragment fragment = new CategorySlidingTabsFragment();
-        Fragments.loadContentFragment(this, R.id.fragment_tabs, fragment);
 
         title.setText("Live Splash");
 
@@ -66,6 +63,10 @@ public class CategoryNavigatorActivity extends BaseActivity {
         if (Util.getData(this) == null) {
             showLoader();
             loadData();
+        } else {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            CategorySlidingTabsFragment fragment = new CategorySlidingTabsFragment();
+            Fragments.loadContentFragment(this, R.id.fragment_tabs, fragment);
         }
     }
 
@@ -80,6 +81,11 @@ public class CategoryNavigatorActivity extends BaseActivity {
 
                 Util.saveData(CategoryNavigatorActivity.this, new Gson().toJson(response.body().getFeed()));
                 Util.intentCreateToast(CategoryNavigatorActivity.this, toast, "Data Loaded", Toast.LENGTH_SHORT);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                CategorySlidingTabsFragment fragment = new CategorySlidingTabsFragment();
+                Fragments.loadContentFragment(CategoryNavigatorActivity.this, R.id.fragment_tabs, fragment);
+
             }
 
             @Override

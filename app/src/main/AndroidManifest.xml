@@ -83,8 +83,13 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
+        </activity>
 
-
+        <activity
+            android:name="com.sayagodshala.livesplash.activities.AddLocationActivity_"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
 
 
