@@ -27,6 +27,7 @@
     <color name="grey13">#2c2c2d</color>
     <color name="grey14">#1e1e1e</color>
     <color name="grey15">#101010</color>
+    <color name="grey15_alpha">#df101010</color>
 
     <item name="app_green" type="color">#21c384</item>
     <item name="app_green_dark" type="color">#1d9662</item>

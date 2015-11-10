@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="140dp">
+    android:layout_height="100dp"
+    android:background="@color/grey1">
 
 
     <LinearLayout
@@ -24,8 +25,7 @@
             android:id="@+id/navigation_profile_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/image_user" />
+            android:layout_centerInParent="true" />
 
 
         <LinearLayout
@@ -38,7 +38,6 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:text="SAYA GODSHALA"
                 android:textColor="@color/grey13"
                 android:textSize="16sp"
@@ -51,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:text="saya@gmail.com"
                 android:textColor="@color/grey8"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/phone"
@@ -59,12 +59,32 @@
                 android:layout_height="wrap_content"
                 android:text="saya@gmail.com"
                 android:textColor="@color/grey8"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/button_green_rounded"
+        android:paddingBottom="4dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="4dp"
+        android:text="Login"
+        android:textColor="@color/app_white"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
 
     <View
         android:id="@+id/navigation_header_line"
@@ -72,7 +92,6 @@
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/navigation_line" />
-
 
 
     <!--<ImageView-->
